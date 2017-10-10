@@ -12,5 +12,8 @@ Contents
 - `helper_function.py` : functions for extracting features, sliding widows and so on.
 - `project_video.mp4` : video for this project
 - `project_video_output.mp4` : output video
+- `saved_data.p` : saved pickle file for classifier and scaler
+- `test_video.mp4` : video for test
+- `test_video_output.mp4` : test video output
 - `writeup.md` : a writeup file
 
