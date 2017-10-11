@@ -72,6 +72,7 @@ I tried various combinations of parameters. For the convenience, I sticked with 
     - hist_bins 32, 64.
 
 Final choice is in 2nd cell of jupyter notebook.
+
 | Parameter | Final choice |
 | ------------- |:-------------:|
 | color_space | 'YCrCb' |
@@ -132,8 +133,10 @@ Here's a [link to my video result](./project_video_output.mp4)
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
 I used two temporal (inter-frame) thresholding methods for remove false positives.
+
 The first one is using all detected bounding boxes of recent 3 frames. Then applying heatmap thresholding with 3. It gives relieving temporal jitters.
-The other one is thresholding change of centroid by comparing previous frame. 32 pixel is used for thresholding. It removes most of difficult false positives. 
+
+The other one is thresholding change of centroid by comparing previous frame. The assumption of this method is that detected cars move in some boundaries between frames. 32 pixel is used for thresholding. It removes most of difficult false positives. 
 
 Here are detected bounding box images of three frames and their corresponding heatmaps.
 
@@ -156,7 +159,7 @@ The code for processing pipeline is located in 13th cell of jupyter notebook.
 
 Even though I used very high accuracy (99.07%) of linear svm classifier and heat-map thresholding, the detected result was only good enough with good and clear image. If road is dirty which means color are not uniform, it usually has false positives. The most difficult case is when the shadows of trees are in the roads. 
 
-My pipeline works poorly when car is on rightmost in the image. Because of the sliding window algorithm I used, there is some area not covered. here's the example.
+Because of the sliding window algorithm I used, My pipeline didn't work when car is on rightmost in the image. There is some area not covered. Here's the example.
 
 ![alt text][scale_1.75]
 ![alt text][scale_2]
