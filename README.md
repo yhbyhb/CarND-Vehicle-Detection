@@ -9,7 +9,7 @@ Contents
 - `test_images/` : images for single test
 - `P5.ipynb` : jupyter notebook for project
 - `README.md` : this file.
-- `helper_function.py` : functions for extracting features, sliding widows and so on.
+- `helper_functions.py` : functions for extracting features, sliding widows and so on.
 - `project_video.mp4` : video for this project
 - `project_video_output.mp4` : output video
 - `saved_data.p` : saved pickle file for classifier and scaler
