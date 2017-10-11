@@ -17,28 +17,29 @@ For the processing pipelines and codes, Check [`P5.ipynb`](./P5.ipynb).
 I wrote this in the order given [rubrics](https://review.udacity.com/#!/rubrics/513/view).
 
 [//]: # (Image References)
-[cars]: ./output_files/cars.png "Cars"
-[notcars]: ./output_files/notcars.png "Not cars"
-[hog]: ./output_files/sample_hog_features.png "hog features"
-[detection]: ./output_files/sample_detection.png
-[scale_1]: ./output_files/sliding_window_scale_1.png
-[scale_1.5]: ./output_files/sliding_window_scale_1.5.png
-[scale_1.75]: ./output_files/sliding_window_scale_1.75.png
-[scale_2]: ./output_files/sliding_window_scale_2.png
-[heatmap]: ./output_files/test5_n_heatmap_nothres.png
-[heatmap_thres]: ./output_files/test5_n_heatmap.png
-[test1]: ./output_files/test1_output.png
-[test2]: ./output_files/test2_output.png
-[test3]: ./output_files/test3_output.png
-[test4]: ./output_files/test4_output.png
-[test5]: ./output_files/test5_output.png
-[test6]: ./output_files/test6_output.png
-[d_bb_hm_0]: ./output_files/difficult_bb_hm_0.png
-[d_bb_hm_1]: ./output_files/difficult_bb_hm_1.png
-[d_bb_hm_2]: ./output_files/difficult_bb_hm_2.png
-[d_result_0]: ./output_files/difficult_result_0.png
-[d_result_1]: ./output_files/difficult_result_1.png
-[d_result_2]: ./output_files/difficult_result_2.png
+
+[cars]: ./output_images/cars.png "Cars"
+[notcars]: ./output_images/notcars.png "Not cars"
+[hog]: ./output_images/sample_hog_features.png "hog features"
+[detection]: ./output_images/sample_detection.png
+[scale_1]: ./output_images/sliding_window_scale_1.png
+[scale_1.5]: ./output_images/sliding_window_scale_1.5.png
+[scale_1.75]: ./output_images/sliding_window_scale_1.75.png
+[scale_2]: ./output_images/sliding_window_scale_2.png
+[heatmap]: ./output_images/test5_n_heatmap_nothres.png
+[heatmap_thres]: ./output_images/test5_n_heatmap.png
+[test1]: ./output_images/test1_output.png
+[test2]: ./output_images/test2_output.png
+[test3]: ./output_images/test3_output.png
+[test4]: ./output_images/test4_output.png
+[test5]: ./output_images/test5_output.png
+[test6]: ./output_images/test6_output.png
+[d_bb_hm_0]: ./output_images/difficult_bb_hm_0.png
+[d_bb_hm_1]: ./output_images/difficult_bb_hm_1.png
+[d_bb_hm_2]: ./output_images/difficult_bb_hm_2.png
+[d_result_0]: ./output_images/difficult_result_0.png
+[d_result_1]: ./output_images/difficult_result_1.png
+[d_result_2]: ./output_images/difficult_result_2.png
 
 ### Writeup / README
 This file `writeup.md` is for writeup. `README.md` describes contents (files and folders) briefly. 
@@ -47,7 +48,7 @@ This file `writeup.md` is for writeup. `README.md` describes contents (files and
 
 #### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-First of all, I leveraged the given codes of lessons which are in [`./helper_function.py`](./helper_function.py).
+First of all, I leveraged the given codes of lessons which are in [`./helper_function.py`](./helper_functions.py).
 
 There are 8792 vehicle images and 8968 non-vehicle images. Here is an example of one of each of the `vehicle` and `non-vehicle` classes. 3rd and 4th cell of jupyter notebook [`./P5.ipynb`](./P5.ipynb)
 
@@ -55,7 +56,7 @@ There are 8792 vehicle images and 8968 non-vehicle images. Here is an example of
 
 ![alt text][notcars]
 
-Then, I explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`). Also, I used binned color and histograms of color as features. The codes are located in function `extract_features()` in line 55 of [`./helper_function.py`](./helper_function.py)
+Then, I explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`). Also, I used binned color and histograms of color as features. The codes are located in function `extract_features()` in line 55 of [`./helper_function.py`](./helper_functions.py)
 
 I chose random images from each of the two classes and displayed them to get a feel for what the HOG features looks like. Below is an example using the `YCrCb` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
