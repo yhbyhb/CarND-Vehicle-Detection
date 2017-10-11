@@ -5,7 +5,7 @@ This is a project of Self-Driving Car Nanodegree Program of Udacity.
 
 Contents
 ---
-- `output_files/` : output images that used in `writeup.md`
+- `output_images/` : output images that used in `writeup.md`
 - `test_images/` : images for single test
 - `P5.ipynb` : jupyter notebook for project
 - `README.md` : this file.

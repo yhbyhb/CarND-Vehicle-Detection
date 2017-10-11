@@ -1,14 +1,14 @@
 # **Vehicle Detection** 
-by Hanbyul Yang, Oct 6, 2017
+by Hanbyul Yang, Oct 12, 2017
 
-## Overview
+### Overview
 This is a project of Self-Driving Car Nanodegree Program of Udacity.
 
 The goals of this project is detecting vehicles of given image or videos that captured at driving car. 
 Details of goals and steps are following:
 
 * Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images and train a Linear SVM classifier
-* Optionally, apply a color transform and append binned color features, as well as histograms of color to HOG feature vector. 
+* Additionally, apply a color transform and append binned color features, as well as histograms of color to HOG feature vector. 
 * Implement a sliding-window technique and use trained classifier to search for vehicles in images.
 * Run pipeline on a video stream and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles.
 * Estimate a bounding box for vehicles detected.
@@ -33,14 +33,19 @@ I wrote this in the order given [rubrics](https://review.udacity.com/#!/rubrics/
 [test4]: ./output_files/test4_output.png
 [test5]: ./output_files/test5_output.png
 [test6]: ./output_files/test6_output.png
+[d_bb_hm_0]: ./output_files/difficult_bb_hm_0.png
+[d_bb_hm_1]: ./output_files/difficult_bb_hm_1.png
+[d_bb_hm_2]: ./output_files/difficult_bb_hm_2.png
+[d_result_0]: ./output_files/difficult_result_0.png
+[d_result_1]: ./output_files/difficult_result_1.png
+[d_result_2]: ./output_files/difficult_result_2.png
 
-
-## Writeup / README
+### Writeup / README
 This file `writeup.md` is for writeup. `README.md` describes contents (files and folders) briefly. 
 
-## Histogram of Oriented Gradients (HOG)
+### Histogram of Oriented Gradients (HOG)
 
-### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+#### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
 First of all, I leveraged the given codes of lessons which are in [`./helper_function.py`](./helper_function.py).
 
@@ -56,7 +61,7 @@ I chose random images from each of the two classes and displayed them to get a f
 
 ![alt text][hog]
 
-### 2. Explain how you settled on your final choice of HOG parameters.
+#### 2. Explain how you settled on your final choice of HOG parameters.
 
 I tried various combinations of parameters. For the convenience, I sticked with linear svm classifier and YCrCb color space.
     - Orientation 8 ~ 12.
@@ -80,30 +85,30 @@ Final choice is in 2nd cell of jupyter notebook.
 | hog_feat | True |
 | y_start_stop | [400, 690] |
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 Feature normalization is performed and `sklearn.cross_validation.train_test_split()` is used for shuffling and train and test data split. 99.07% test accuracy is acquired. 5th cell of [jupyter notebook](./P5.ipynb) shows these process.
 
-## Sliding Window Search
+### Sliding Window Search
 
-### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+#### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I also leveraged function `find_cars()` from lesson. It extracts hog features whole image at once rather than each window. The codes are located in 7th cell of notebook.
+I also leveraged function `find_cars()` from lesson. It extracts hog features whole image at once rather than each window. The codes are located in 7th cell of notebook. `find_car()` uses 64 x 64 window size for 1.0 scale. Different scale extends or reduces region of sliding window by dividing image size with scale value.
 
-At first I used two scales but it performed poorly so I increase number of scales. Using 4 scales of window size for searching vehicles was the optimal. 75% of overlapped window is used.
+At first I used two scales (1 and 2) but it performed poorly so I increase number of scales. Using 4 scales (1, 1.5, 1.75, 2) for searching vehicles was the optimal. 75% of overlapped window is used.
 Here is an example. Each color represents different scale.
 
 ![alt text][detection]
 
-There are false positives. Below is its heatmap.
+But,there are false positives in image. So I made the heatmap for detected bounding boxes. High value means duplicated detections. 
 
 ![alt text][heatmap]
 
-I used heatmap threshold (1) for removing false positive. The codes are in 11th and 12th cells of jupyter notebook.
+Thresholding heatmap with value 1 is used for removing false positive. The codes are in 11th and 12th cells of jupyter notebook.
 
 ![alt text][heatmap_thres]
 
-### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
+#### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 I tested with given test images in `test_images/` until it works all of test images. The optimization techniques I used are adjusting window size, using multiple windows sizes (scales) and adjusting heatmap threshold.
 
@@ -117,32 +122,42 @@ Belows are results of test images and 14th and 15th cell of jupyter notebook sho
 ![alt text][test6]
 
 
-##  Video Implementation
+### Video Implementation
 
-### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
-
-
-### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
-
-I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
-
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
-
-### Here are six frames and their corresponding heatmaps:
-
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
+#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
+Here's a [link to my video result](./project_video_output.mp4)
 
 
-## Discussion
+#### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+I used two temporal (inter-frame) thresholding methods for remove false positives.
+The first one is using all detected bounding boxes of recent 3 frames. Then applying heatmap thresholding with 3. It gives relieving temporal jitters.
+The other one is thresholding change of centroid by comparing previous frame. 32 pixel is used for thresholding. It removes most of difficult false positives. 
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+Here are detected bounding box images of three frames and their corresponding heatmaps.
 
+![alt text][d_bb_hm_0]
+![alt text][d_bb_hm_1]
+![alt text][d_bb_hm_2]
+
+And then here are results after applying two temporal thresholding methods.
+
+![alt text][d_result_0]
+![alt text][d_result_1]
+![alt text][d_result_2]
+
+The code for processing pipeline is located in 13th cell of jupyter notebook.
+
+
+### Discussion
+
+#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+
+Even though I used very high accuracy (99.07%) of linear svm classifier and heat-map thresholding, the detected result was only good enough with good and clear image. If road is dirty which means color are not uniform, it usually has false positives. The most difficult case is when the shadows of trees are in the roads. 
+
+My pipeline works poorly when car is on rightmost in the image. Because of the sliding window algorithm I used, there is some area not covered. here's the example.
+
+![alt text][scale_1.75]
+![alt text][scale_2]
+
+I think more robust method could be one based on convolutional neural network, such as YOLO. It may have fewer false positives. 
